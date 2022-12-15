@@ -10,8 +10,10 @@ package pws.c.resfulapi.model;
  * @author Wiratama
  */
 public class Product {
-    private String id;
+   private String id;
    private String name;
+   private String qty;
+   private String price;
 
     public String getId() {
         return id;
@@ -27,6 +29,22 @@ public class Product {
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+     public String getQty() {
+        return qty;
+    }
+
+    public void setQty(String name) {
+        this.qty = name;
+    }
+    
+     public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String name) {
+        this.price = name;
     }
     
 }
