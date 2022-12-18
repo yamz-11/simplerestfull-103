@@ -22,6 +22,8 @@ import pws.c.resfulapi.model.Product;
  */
 @RestController
 public class ProductServiceController {
+    
+    // Method request http get menggunakan hashMap
     private static Map<String, Product> productRepo = new HashMap<>();
    static {
       Product honey = new Product();
@@ -47,25 +49,29 @@ public class ProductServiceController {
       
       Product sayur = new Product();
       sayur.setId("4");
-      sayur.setName("Retri Sawi");
+      sayur.setName("Sawi");
       sayur.setQty("1");
       sayur.setPrice("Rp. 5000");
       productRepo.put(sayur.getId(), sayur);
       
    }
    
-   @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
-   public ResponseEntity<Object> delete(@PathVariable("id") String id, @RequestBody Product product) { 
-      productRepo.remove(id);
-      return new ResponseEntity<>("Product is deleted successsfully", HttpStatus.OK);
+   // Method untuk mendapatkan API product
+   @RequestMapping(value = "/products")
+   public ResponseEntity<Object> getProduct() {
+      return new ResponseEntity<>(productRepo.values(), HttpStatus.OK);
    }
-    
-    @RequestMapping(value = "/products/{id}", method = RequestMethod.PUT)
+   
+   // PUT API
+   // Method update data product
+   @RequestMapping(value = "/products/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Object> updateProduct(@PathVariable("id") String id, @RequestBody Product product){
         
+        // Validasi ID Product
         if(!productRepo.containsKey(id)){
             return new ResponseEntity<>("Product Not Found, Please check again", HttpStatus.NOT_FOUND);
         }
+        // kondisi ketika berhasil update data 
         else{
             productRepo.remove(id);
             product.setId(id);
@@ -74,21 +80,27 @@ public class ProductServiceController {
         } 
     }
     
+    // POST API 
+    // Method create data product
     @RequestMapping(value = "/products", method = RequestMethod.POST)
     public ResponseEntity<Object> createProduct(@RequestBody Product product){
         
+        // Validasi ID product
         if(productRepo.containsKey(product.getId())){
             return new ResponseEntity<>("Failed to post, Product ID cannot be the same ", HttpStatus.OK);
         }
+        // kondisi ketika berhasil menambahkan data 
         else{
             productRepo.put(product.getId(), product);
             return new ResponseEntity<>("Product is created Successfully", HttpStatus.CREATED);
         }
     }
-   
-   @RequestMapping(value = "/products")
-   public ResponseEntity<Object> getProduct() {
-      return new ResponseEntity<>(productRepo.values(), HttpStatus.OK);
+    // Delete API product
+    // Method menghapus data product
+    @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
+   public ResponseEntity<Object> deleteProduct(@PathVariable("id") String id, @RequestBody Product product) { 
+      productRepo.remove(id);
+      return new ResponseEntity<>("Product is deleted successsfully", HttpStatus.OK);
    }
     
 }
